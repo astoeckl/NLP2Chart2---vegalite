@@ -14,6 +14,17 @@ import os
 from os import listdir
 from dotenv import load_dotenv
 
+import json
+from nl4dv import NL4DV
+
+import nltk
+nltk.download('wordnet')
+nltk.download('punkt')
+nltk.download('all-corpora')
+
+import spacy
+nlp = spacy.load('en_core_web_sm') # instead of spacy.load('en')
+
 load_dotenv()
 token = os.environ.get("api-token")
 openai.api_key = token
@@ -280,10 +291,33 @@ def getGPT3():
 
 #@st.cache
 def create_figure():
-    #plt.style.use(st.session_state.style)
-    plt.style.use('ggplot')
-    plt.rcParams['figure.figsize'] = (10, 5)
+    #data_url = os.path.join(".", "gapminder-data.csv")
 
+    #data_url ="file://"+ ".\gapminder-data.csv"
+    #print(data_url)
+    data_url ="https://raw.githubusercontent.com/astoeckl/NLP2Chart-Data/main/gapminder-data.csv"
+    label_attribute = None
+    dependency_parser_config = {"name": "spacy", "model": "en_core_web_sm", "parser": None}
+
+    nl4dv_instance = NL4DV(verbose=False,
+                       debug=True,
+                       data_url=data_url,
+                       label_attribute=label_attribute,
+                       dependency_parser_config=dependency_parser_config
+                       )
+    nl4dv_response = nl4dv_instance.analyze_query(st.session_state.comand_input)
+
+    #print(nl4dv_response['visList'][0]['vlSpec'])
+
+    if len(nl4dv_response['visList'])>0:
+        vegafig = nl4dv_response['visList'][0]['vlSpec']
+        vegafig['width'] = 800
+        vegafig['height'] = 450
+    else:
+        vegafig = {}
+
+    return vegafig
+    #st.vega_lite_chart(data = df, spec=testvega)
     ### Statements from Data and GPT3
     #my_exec(st.session_state.comand_load)
     #print(st.session_state.comand_load)
@@ -411,7 +445,9 @@ with col1:
     st.text_area("Advise the system", key="comand_input", on_change=getGPT3,
         help="Examples: \n Plot a sinus function from -4 pi to 4 pi; \n Make an array of 400 random numbers and plot a horizontal histogram; \n plot sum of total_cases grouped by location as bar chart (COVID19 Data)")
     fig = create_figure()
-    st.pyplot(fig=fig)
+    #st.pyplot(fig=fig)
+    if fig != {}:
+        st.vega_lite_chart(spec=fig, use_container_width=True)
 
 set_widgets()
 
