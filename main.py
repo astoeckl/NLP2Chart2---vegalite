@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 import json
 from nl4dv import NL4DV
-import altair as alt
+#import altair as alt
 
 import nltk
 #nltk.download('wordnet')
@@ -30,7 +30,6 @@ load_dotenv()
 token = os.environ.get("api-token")
 openai.api_key = token
 
-#markersdict = {'.': 'point', ',': 'pixel', 'o': 'circle', 'v': 'triangle_down', '^': 'triangle_up', '<': 'triangle_left', '>': 'triangle_right', '1': 'tri_down', '2': 'tri_up', '3': 'tri_left', '4': 'tri_right', '8': 'octagon', 's': 'square', 'p': 'pentagon', '*': 'star', 'h': 'hexagon1', 'H': 'hexagon2', '+': 'plus', 'x': 'x', 'D': 'diamond', 'd': 'thin_diamond', '|': 'vline', '_': 'hline', 'P': 'plus_filled', 'X': 'x_filled', 0: 'tickleft', 1: 'tickright', 2: 'tickup', 3: 'tickdown', 4: 'caretleft', 5: 'caretright', 6: 'caretup', 7: 'caretdown', 8: 'caretleftbase', 9: 'caretrightbase', 10: 'caretupbase', 11: 'caretdownbase', 'None': 'nothing', None: 'nothing', ' ': 'nothing', '': 'nothing'}
 
 ### Customize UI
 st.set_page_config(layout="wide", page_title="NLP2Chart", page_icon=":)")
@@ -77,15 +76,6 @@ def init_widgets():
     if 'ylim_end' in st.session_state:
         del st.session_state.ylim_end
     return True
-
-#fig = plt.gcf()
-#contained_artists = fig.get_children()
-#if len(contained_artists) <= 1:
-#fig = plt.figure()
-#ax = fig.add_subplot()
-#ax.set_title("Figure Title")
-#with open('fig'+ st.session_state.id +'.pickle', 'wb') as f: # should be 'wb' rather than 'w'
-    #pickle.dump(fig, f)
 
 ### Layout Sidebar ###
 
@@ -143,7 +133,6 @@ def set_widgets():
         vegafig = pickle.load(f)
 
     with col2:
-        #print(vegafig)
         ### Widgets General
         try:
             figtitel = vegafig['title']['text']
@@ -190,71 +179,21 @@ def set_widgets():
 
             width_lines = st.expander(label='Line Width')
             with width_lines:
-                #for i in range(numlines):
-                    #lwidth = plt.gca().get_lines()[i].get_linewidth()
                 st.number_input("Line 1", min_value=0.0, max_value=10.0, step= 1.0, value=1.0, key="linewidth")
 
 
-            #marker_lines = st.expander(label='Marker')
-            #with marker_lines:
-                #for i in range(numlines):
-                    #lmarker = plt.gca().get_lines()[i].get_marker()
-                    #if lmarker in markersdict.keys():
-                        #ind = list(markersdict.keys()).index(lmarker)
-                    #else:
-                        #ind = 0
-                    #st.selectbox("Line "+str(i+1),  markersdict.values(), index = ind, key="linemarker"+str(i))
 
-            #legend_lines = st.expander(label='Legend')
-            #with legend_lines:
-                #if plt.gca().get_legend() != None:
-                    #vis = plt.gca().get_legend().get_visible()
-                #else:
-                    #vis = False
-                #st.checkbox('Visible', value = vis , key = 'visiblelegend')
-                #for i in range(numlines):
-                    #llegend = plt.gca().get_lines()[i].get_label()
-                    #if llegend.startswith('_'):
-                        #plt.gca().get_lines()[i].set_label('Line '+str(i))
-                        #llegend = 'Line '+str(i+1)
-                    #print(llegend)
-                    #st.text_input("Label for line "+str(i+1), value = llegend, key="linelabel"+str(i))
 
 
         ### Widgets for Scatterplots #
-        #if plt.gca().collections:
-            #color_points = st.expander(label='Point Color Palettes')
-            #numcolls = len(plt.gca().collections)
-            #with color_points:
-                #for i in range(numcolls):
-                    #pmap = plt.getp(plt.gca().collections[i], 'cmap').name
-                    #maplist = ['viridis', 'plasma', 'inferno', 'magma', 'cividis']
-                    #maplist = plt.colormaps()
-                    #if pmap in maplist:
-                        #ind = maplist.index(pmap)
-                    #else:
-                        #ind = 0
-                    #st.selectbox("Points "+str(i+1),  maplist, index = ind, key="pointcolor"+str(i))
 
         ### Widgets for Barplots
-        #if plt.gca().containers:
-            #bar_color = st.expander(label='Color of Bars')
-            #num_bars = len(plt.gca().containers)
-            #with bar_color:
-                #for i in range(num_bars):
-                    #color = plt.gca().containers[i].patches[0].properties()['facecolor']
-                    #color = to_hex(color)
-                    #st.color_picker('Bargroup '+str(i+1), color, key="barcolor"+str(i))
 
 
 ### Create Figure ###
 
 #@st.cache
 def create_figure():
-    #data_url = os.path.join(".", "gapminder-data.csv")
-
-    #data_url ="file://"+ ".\gapminder-data.csv"
-    #print(data_url)
     data_url = st.session_state.prompt_load
     label_attribute = None
     dependency_parser_config = {"name": "spacy", "model": "en_core_web_sm", "parser": None}
@@ -267,25 +206,6 @@ def create_figure():
                        )
     nl4dv_response = nl4dv_instance.analyze_query(st.session_state.comand_input)
 
-    #print(nl4dv_response['visList'][0]['vlSpec'])
-    #if len(nl4dv_response['visList'])>0:
-        #dict = nl4dv_response['visList'][0]['vlSpec']
-    #else:
-        #dict = {}
-
-    #if dict['encoding']['x']['aggregate'] == None:
-        #dict['encoding']['x'].pop('aggregate')
-    #if dict['encoding']['y']['aggregate'] == None:
-        #dict['encoding']['y'].pop('aggregate')
-
-    #chart = alt.Chart.from_dict(dict)
-
-    #chart = chart.properties(width=800, height=450)
-
-    #chart = chart.properties(color='#000000')
-    #chart = chart.mark_line().encode(color=alt.value("#FFAA00"))
-
-
     if len(nl4dv_response['visList'])>0:
         vegafig = nl4dv_response['visList'][0]['vlSpec']
         vegafig['width'] = 800
@@ -293,21 +213,9 @@ def create_figure():
     else:
         vegafig = {}
 
-    #st.vega_lite_chart(data = df, spec=testvega)
-    ### Statements from Data and GPT3
-    #my_exec(st.session_state.comand_load)
-    #print(st.session_state.comand_load)
-    #if 'comand_output' in st.session_state:
-        #my_exec(st.session_state.comand_output)
-
-
     # Statements from frontend
     ### Set Grid
-    #my_exec(st.session_state.grid)
-    #vegafig['config']['axis']['grid'] = st.session_state.grid
-    #vegafig = chart.to_dict()
-    #print(vegafig)
-    ### Set Axes Labels
+        ### Set Axes Labels
 
     if 'xaxis' in st.session_state:
         try:
@@ -410,10 +318,7 @@ def create_figure():
 ############## Scatterplots #####
 
     ### Set Colormap
-    #for i in range(numcolls):
-        #if 'pointcolor'+str(i) in st.session_state:
-            #plt.setp(plt.gca().collections[i], cmap=plt.get_cmap(st.session_state['pointcolor'+str(i)]))
-        #plt.getp(plt.gca().collections[i], 'cmap').name
+
 
 ############## Barcharts ##########
 
