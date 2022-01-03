@@ -19,9 +19,9 @@ from nl4dv import NL4DV
 #import altair as alt
 
 import nltk
-#nltk.download('wordnet')
-#nltk.download('punkt')
-#nltk.download('all-corpora')
+nltk.download('wordnet')
+nltk.download('punkt')
+nltk.download('all-corpora')
 
 import spacy
 nlp = spacy.load('en_core_web_sm') # instead of spacy.load('en')
