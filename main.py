@@ -347,11 +347,11 @@ def create_figure():
 
 with col1:
     #st.write(st.session_state)
-    st.header('Create Charts with Commands in Natural Language')
+    st.header('Create Charts with Commands in Natural Language - V')
     demo_video = st.expander(label='Tutorial Video')
     with demo_video:
-        st.video(data="https://youtu.be/UiCSczhslAs")
-    st.text_area("Advise the system", key="comand_input",
+        st.video(data="https://youtu.be/cuR1U0Y1vJQ")
+    st.text_area("Advise the system", key="comand_input", on_change=init_widgets,
         help="Examples: \n Plot a sinus function from -4 pi to 4 pi; \n Make an array of 400 random numbers and plot a horizontal histogram; \n plot sum of total_cases grouped by location as bar chart (COVID19 Data)")
     fig = create_figure()
     #st.pyplot(fig=fig)

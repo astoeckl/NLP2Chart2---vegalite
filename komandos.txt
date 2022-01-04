@@ -14,7 +14,7 @@ y Axes label Feature
 Aufgabe 2)
 barchart of lifeExp by continent
 blue color
-title Life Expetancy
+title Barchart
 
 Aufgabe 3)
 barchart of gdpPercap by country
