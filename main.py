@@ -292,28 +292,6 @@ def create_figure():
             except:
                 pass
 
-    ### Set Marker
-    #reversed_markersdict = {value : key for (key, value) in markersdict.items()}
-    #for i in range(numlines):
-        #if 'linemarker'+str(i) in st.session_state:
-            #mark = reversed_markersdict[st.session_state['linemarker'+str(i)]]
-            #exec('plt.gca().get_lines()[i].set_marker(\''+ mark +'\')')
-            #if plt.gca().get_legend() != None:
-                #exec('plt.gca().get_legend().legendHandles[i].set_marker(\''+ mark +'\')')
-
-    ### Set legend
-    #for i in range(numlines):
-        #if 'linelabel'+str(i) in st.session_state:
-            #exec('plt.gca().get_lines()[i].set_label(\''+ st.session_state['linelabel'+str(i)] +'\')')
-            #plt.legend()
-
-    #if 'visiblelegend' in st.session_state:
-        #if st.session_state.visiblelegend:
-            #if plt.gca().get_legend() != None:
-                #plt.gca().get_legend().set_visible(True)
-        #else:
-            #if plt.gca().get_legend() != None:
-                #plt.gca().get_legend().set_visible(False)
 
 ############## Scatterplots #####
 
@@ -360,19 +338,3 @@ with col1:
         st.vega_lite_chart(spec=fig, use_container_width=True)
 
 set_widgets()
-
-### Export Figures
-
-#st.sidebar.markdown('### Export ###')
-
-#with open('vegafig'+ st.session_state.id +'.pickle', 'rb') as f:
-    #fig = pickle.load(f)
-#chart = alt.Chart.from_dict(fig)
-#chart.save('figure_export.png')
-#chart.save('figure_export.html')
-#fig.savefig('figure_export.png', dpi=fig.dpi)
-#mpld3.save_html(fig,'figure_export.html')
-#with open('figure_export.png', 'rb') as f:
-   #st.sidebar.download_button('Download PNG', f, file_name='figure_export.png')
-#with open('figure_export.html', 'rb') as f:
-   #st.sidebar.download_button('Download HTML', f, file_name='figure_export.html')
